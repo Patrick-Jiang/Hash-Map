@@ -22,14 +22,14 @@ public class StringKey<K> implements Comparable<StringKey> {
     public int hashCode() {
         int hashCode = 0;
         int asciiValue;
-        int termValue;
+        int totalValue;
         final int COEFFICIENT = 31;
 
 
         for (int i = 0; i < this.keyName.length(); i++) {
             asciiValue = (int)keyName.charAt(i);
-            termValue = asciiValue * (int)Math.pow(COEFFICIENT, i);
-            hashCode += termValue;
+            totalValue = asciiValue * (int)Math.pow(COEFFICIENT, i);
+            hashCode += totalValue;
         }
 
         return Math.abs(hashCode);

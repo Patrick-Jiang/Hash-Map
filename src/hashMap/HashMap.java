@@ -49,7 +49,23 @@ public class HashMap<K, V> implements Map<K, V> {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-
+		for (int i = 0; i < this.table.length; i++) {
+            this.table[i] = null;
+        }
+        this.size = 0;
+        this.usedCapacity = 0;
+	}
+	
+	private int GetMatchingOrNextAvailableBucket(K key) {
+		int startingPoint = key.hashCode() % table.length;
+		for (int i = startingPoint; i < table.length; i++) {
+            if (table[i] != null) {
+                if (key.equals(table[i].getKey())) {
+                    return i;
+                }
+            }
+        }
+		return -1;
 	}
 
 	@Override
@@ -83,3 +99,21 @@ public class HashMap<K, V> implements Map<K, V> {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
