@@ -1,4 +1,4 @@
-package HashMap;
+package hashMap;
 
 public class Item implements Comparable<Item> {
     private String name;

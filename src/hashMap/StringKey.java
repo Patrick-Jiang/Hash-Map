@@ -1,4 +1,4 @@
-package HashMap;
+package hashMap;
 
 public class StringKey<K> implements Comparable<StringKey> {
     private String keyName;

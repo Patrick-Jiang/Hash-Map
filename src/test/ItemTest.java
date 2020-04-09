@@ -1,7 +1,8 @@
 package test;
-import HashMap.*;
-
 import org.junit.jupiter.api.Test;
+
+import hashMap.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest
