@@ -43,47 +43,112 @@ public class HashMap<K, V> implements Map<K, V> {
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return size == 0 ;
+		return size == 0;
 	}
 
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < this.table.length; i++) {
-            this.table[i] = null;
-        }
-        this.size = 0;
-        this.usedCapacity = 0;
+			this.table[i] = null;
+		}
+		this.size = 0;
+		this.usedCapacity = 0;
 	}
-	
-	private int GetMatchingOrNextAvailableBucket(K key) {
+
+	private int getMatchingOrNextAvailableBucket(K key) {
 		int startingPoint = key.hashCode() % table.length;
+		boolean hasMatch = false;
+		int bucket = -1;
 		for (int i = startingPoint; i < table.length; i++) {
-            if (table[i] != null) {
-                if (key.equals(table[i].getKey())) {
-                    return i;
-                }
-            }
-        }
-		return -1;
+			if (table[i] != null) {
+				if (key.equals(table[i].getKey())) {
+					hasMatch = true;
+					bucket = i;
+					return bucket;
+				}
+			}
+		}
+		if (!hasMatch) {
+			for (int i = startingPoint; i < table.length; i++) {
+				if (table[i] == null) {
+					bucket = i;
+					return bucket;
+				}
+			}
+		}
+
+		return bucket;
 	}
 
 	@Override
 	public V get(K key) {
 		// TODO Auto-generated method stub
+		if (getMatchingOrNextAvailableBucket(key) >= 0) {
+			return table[getMatchingOrNextAvailableBucket(key)].getValue();
+		}
 		return null;
 	}
 
 	@Override
 	public V put(K key, V value) {
 		// TODO Auto-generated method stub
-		return null;
+		if (key == null || value == null) {
+			throw new NullPointerException();
+		}
+
+		V oldValue = null;
+
+		int bucket = getMatchingOrNextAvailableBucket(key);
+
+		if (table[bucket] == null) {
+			size++;
+			usedCapacity++;
+		} else {
+			oldValue = table[bucket].getValue();
+		}
+
+		table[bucket] = new Entry<>(key, value);
+
+		return oldValue;
 	}
 
 	@Override
 	public V remove(K key) {
 		// TODO Auto-generated method stub
-		return null;
+		if (key == null) {
+			throw new NullPointerException();
+		}
+		int bucket = getMatchingOrNextAvailableBucket(key);
+		if (bucket == -1) {
+			return null;
+		} else {
+			V removedValue = table[bucket].getValue();
+			table[bucket] = new Entry<>(key, null);
+			size--;
+			return removedValue;
+		}
+	}
+
+	private int resize() {
+		int newSize = (table.length * 2) + 1;
+		boolean primeFound = false;
+		boolean evenlyDivisible = false;
+		while (!primeFound) {
+			for (int i = 3; i <= (int) Math.sqrt(newSize); i++) {
+				if (newSize % i == 0) {
+					evenlyDivisible = true;
+				}
+			}
+
+			if (evenlyDivisible == false) {
+				primeFound = true;
+			} else {
+				evenlyDivisible = false;
+				newSize += 2;
+			}
+		}
+		return newSize;
 	}
 
 	@Override
@@ -99,21 +164,3 @@ public class HashMap<K, V> implements Map<K, V> {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
