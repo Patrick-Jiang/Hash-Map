@@ -83,11 +83,13 @@ public class HashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(K key) {
-		// TODO Auto-generated method stub
-		if (getMatchingOrNextAvailableBucket(key) >= 0) {
-			return table[getMatchingOrNextAvailableBucket(key)].getValue();
+		if (size == 0) {
+			return null;
 		}
-		return null;
+		// TODO Auto-generated method stub
+
+		return table[getMatchingOrNextAvailableBucket(key)].getValue();
+
 	}
 
 	@Override
@@ -110,6 +112,9 @@ public class HashMap<K, V> implements Map<K, V> {
 
 		table[bucket] = new Entry<>(key, value);
 
+		if (usedCapacity >= threshold) {
+			rehash();
+		}
 		return oldValue;
 	}
 
@@ -120,20 +125,22 @@ public class HashMap<K, V> implements Map<K, V> {
 			throw new NullPointerException();
 		}
 		int bucket = getMatchingOrNextAvailableBucket(key);
-		if (bucket == -1) {
-			return null;
-		} else {
+		if (table[bucket] != null) {
 			V removedValue = table[bucket].getValue();
 			table[bucket] = new Entry<>(key, null);
 			size--;
 			return removedValue;
+		} else {
+			return null;
 		}
+
 	}
 
 	private int resize() {
 		int newSize = (table.length * 2) + 1;
 		boolean primeFound = false;
 		boolean evenlyDivisible = false;
+
 		while (!primeFound) {
 			for (int i = 3; i <= (int) Math.sqrt(newSize); i++) {
 				if (newSize % i == 0) {
@@ -149,6 +156,21 @@ public class HashMap<K, V> implements Map<K, V> {
 			}
 		}
 		return newSize;
+	}
+
+	private void rehash() {
+		Entry<K, V>[] oldTable = table;
+		int capacity = this.resize();
+		table = new Entry[capacity];
+		size = 0;
+		usedCapacity = 0;
+		threshold = (int) (capacity * loadFactor);
+
+		for (int i = 0; i < oldTable.length; i++) {
+			if (oldTable[i] != null && oldTable[i].getValue() != null) {
+				put(oldTable[i].getKey(), oldTable[i].getValue());
+			}
+		}
 	}
 
 	@Override

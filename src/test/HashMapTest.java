@@ -375,275 +375,275 @@ class HashMapTest
         assertEquals(threshold, hashMap.size());
     }
         //endregion
-//
-//        //regionIsEmpty Test
-//    /// <summary>
-//    /// Test that IsEmpty returns true on an empty hash map.
-//    /// </summary>
-//    @Test
-//    public void HashMapIsEmptyReturnsTrueTest()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//
-//        assertTrue(hashMap.isEmpty());
-//    }
-//
-//    /// <summary>
-//    /// Test that IsEmpty returns false on a hash map with contents.
-//    /// </summary>
-//    @Test
-//    public void HashMapIsEmptyReturnsFalseTest()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        hashMap.put(new StringKey("item"), new Item("item", 1, 1.0));
-//
-//        assertFalse(hashMap.isEmpty());
-//    }
-//        //endregion
-//
-//        //regionClear Test
-//    /// <summary>
-//    /// Test that Clear removes items from the HashMap.
-//    /// </summary>
-//    @Test
-//    public void ClearEmptiesTableTest()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        hashMap.put(key, new Item("item", 1, 1.0));
-//
-//        // make sure to actually clear the hashmap before testing... :|
-//        hashMap.clear();
-//
-//        assertEquals(null, hashMap.get(key));
-//        assertTrue(hashMap.isEmpty());
-//        assertEquals(0, hashMap.size());
-//    }
-//        //endregion
-//
-//        //regionGet Tests
-//    /// <summary>
-//    /// Test Get returns the value that matches the key passed in.
-//    /// </summary>
-//    @Test
-//    public void Get_Retuns_Value_of_key_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//        hashMap.put(key, item);
-//
-//        assertEquals(item, hashMap.get(key));
-//        assertEquals(1, hashMap.size()); // size should remain 1
-//    }
-//
-//    /// <summary>
-//    /// Test Get returns null if the key doesn't exist in the hash.
-//    /// </summary>
-//    @Test
-//    public void Get_Retuns_Null_on_key_missing_from_hash_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//
-//        assertEquals(null, hashMap.get(key));
-//    }
-//        //endregion
-//        //regionRemove Tests
-//    /// <summary>
-//    /// Test Remove decreases the size of the HashMap.
-//    /// </summary>
-//    @Test
-//    public void Remove_Decreases_Size_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//        hashMap.put(key, item);
-//        assertEquals(1, hashMap.size());
-//        hashMap.remove(key);
-//        assertEquals(0, hashMap.size());
-//    }
-//
-//    /// <summary>
-//    /// Test Remove removes the key from the HashMap.
-//    /// </summary>
-//    @Test
-//    public void Remove_Removes_Key_From_Hash_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//        hashMap.put(key, item);
-//        hashMap.remove(key);
-//
-//        assertEquals(null, hashMap.get(key));
-//    }
-//
-//    /// <summary>
-//    /// Test Remove returns the removed value from the HashMap.
-//    /// </summary>
-//    @Test
-//    public void Remove_Returns_Removed_Value_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//        hashMap.put(key, item);
-//        Item returnedItem = hashMap.remove(key);
-//
-//        assertEquals(item, returnedItem);
-//    }
-//
-//    /// <summary>
-//    /// Test Remove returns null when removing a value that doesn't exist in the HashMap.
-//    /// </summary>
-//    @Test
-//    public void Remove_Returns_null_or_default_Value_when_no_match_exists_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//
-//        // try to remove a value that doesn't exist:
-//        Item returnedItem = hashMap.remove(key);
-//
-//        assertTrue(returnedItem == null);
-//    }
-//
-//    /// <summary>
-//    /// Test that remove throws an exception when called with a null key value.
-//    /// </summary>
-//    @Test
-//    public void Remove_Throws_Exception_With_Null_Key_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//
-//        Throwable exception = assertThrows(NullPointerException.class,
-//                () -> hashMap.remove(null));
-//    }
-//
-//    /// <summary>
-//    /// Test that remove keeps a placeholder in the table
-//    /// </summary>
-//    @Test
-//    public void Remove_keeps_a_key_placeholder_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//        StringKey key = new StringKey("item");
-//        Item item = new Item("item", 1, 1.0);
-//        hashMap.put(key, item);
-//        Item returnedItem = hashMap.remove(key);
-//
-//        Entry<StringKey, Item>[] table = hashMap.getTable();
-//        int bucket = key.hashCode() % table.length;
-//
-//        // a placeholder will have an Entry with a null for the value, but the key is stil the same as the removed
-//        assertEquals(table[bucket].getKey(), key);
-//        assertEquals(table[bucket].getValue(), null);
-//    }
-//
-//    /// <summary>
-//    /// Removes cause placeholders to remain in the table, test to ensure that
-//    /// a resize still occurs even when items are removed
-//    /// </summary>
-//    @Test
-//    public void Remove_placeholders_count_towards_resize_Test()
-//    {
-//        double loadFactor = 0.5; // default
-//        int capacity = 7; // default;
-//
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>(capacity, loadFactor);
-//        int threshold = (int)(capacity * loadFactor);
-//        int i = 0;
-//        for (i = 0; i < threshold - 1; i++)
-//        {
-//            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
-//        }
-//
-//        // just before the threshold, the table should still be the same
-//        assertEquals(capacity, hashMap.getTable().length);
-//        assertEquals(threshold - 1, hashMap.size());
-//
-//        hashMap.remove(new StringKey("item1"));
-//        assertEquals(threshold - 2, hashMap.size());
-//
-//        hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
-//
-//        // the next prime after 7 is 7*2 = 14... and 14+1 is 15.. that's not prime, so 15+2 is 17; which is prime!
-//        assertEquals(17, hashMap.getTable().length);
-//        assertEquals(threshold - 1, hashMap.size());
-//    }
-//        //endregion
-//
-//        //regionKeys()
-//    /// <summary>
-//    /// Keys returns an Iterator of all the keys in the hashmap.
-//    /// </summary>
-//    @Test
-//    public static void Keys_returns_list_of_keys_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//
-//        for (int i = 0; i < 15; i++)
-//        {
-//            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
-//        }
-//
-//        // get the keys for the map
-//        Iterator keys = hashMap.keys();
-//        int count = 0;
-//        while (keys.hasNext())
-//        {
-//            StringKey currentKey = (StringKey)keys.next();
-//            // look up each item in the hashmap, using the keys, they should all be there!
-//            Item currItem = hashMap.get(currentKey);
-//            assertNotNull(currItem);
-//            count++;
-//        }
-//
-//        assertEquals(hashMap.size(), count);
-//    }
-//        //endregion
-//
-//
-//        //regionValues()
-//    /// <summary>
-//    /// Values returns an Iterator of all the Values in the hashmap.
-//    /// </summary>
-//    @Test
-//    public static void Values_returns_list_of_Values_Test()
-//    {
-//        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
-//
-//        for (int i = 0; i < 15; i++)
-//        {
-//            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
-//        }
-//
-//        Entry<StringKey, Item>[] table = hashMap.getTable();
-//
-//        // get the keys for the map
-//        Iterator values = hashMap.values();
-//        int count = 0;
-//
-//        // loop through the values of the hashmap values
-//        while (values.hasNext())
-//        {
-//            Item currValue = (Item)values.next();
-//
-//            StringKey currKey = new StringKey(currValue.getName());
-//
-//            Item matchValue = hashMap.get(currKey);
-//
-//            // The returned value should be the value we looked up with get, based on the same key name
-//            assertEquals(matchValue, currValue);
-//
-//            count++;
-//        }
-//
-//        // The count of the values should be the same as the puts into the table earlier in the test.
-//        assertEquals(hashMap.size(), count);
-//    }
-//        //endregion
+
+        //regionIsEmpty Test
+    /// <summary>
+    /// Test that IsEmpty returns true on an empty hash map.
+    /// </summary>
+    @Test
+    public void HashMapIsEmptyReturnsTrueTest()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+
+        assertTrue(hashMap.isEmpty());
+    }
+
+    /// <summary>
+    /// Test that IsEmpty returns false on a hash map with contents.
+    /// </summary>
+    @Test
+    public void HashMapIsEmptyReturnsFalseTest()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        hashMap.put(new StringKey("item"), new Item("item", 1, 1.0));
+
+        assertFalse(hashMap.isEmpty());
+    }
+        //endregion
+
+        //regionClear Test
+    /// <summary>
+    /// Test that Clear removes items from the HashMap.
+    /// </summary>
+    @Test
+    public void ClearEmptiesTableTest()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        hashMap.put(key, new Item("item", 1, 1.0));
+
+        // make sure to actually clear the hashmap before testing... :|
+        hashMap.clear();
+
+        assertEquals(null, hashMap.get(key));
+        assertTrue(hashMap.isEmpty());
+        assertEquals(0, hashMap.size());
+    }
+        //endregion
+
+        //regionGet Tests
+    /// <summary>
+    /// Test Get returns the value that matches the key passed in.
+    /// </summary>
+    @Test
+    public void Get_Retuns_Value_of_key_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+        hashMap.put(key, item);
+
+        assertEquals(item, hashMap.get(key));
+        assertEquals(1, hashMap.size()); // size should remain 1
+    }
+
+    /// <summary>
+    /// Test Get returns null if the key doesn't exist in the hash.
+    /// </summary>
+    @Test
+    public void Get_Retuns_Null_on_key_missing_from_hash_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+
+        assertEquals(null, hashMap.get(key));
+    }
+        //endregion
+        //regionRemove Tests
+    /// <summary>
+    /// Test Remove decreases the size of the HashMap.
+    /// </summary>
+    @Test
+    public void Remove_Decreases_Size_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+        hashMap.put(key, item);
+        assertEquals(1, hashMap.size());
+        hashMap.remove(key);
+        assertEquals(0, hashMap.size());
+    }
+
+    /// <summary>
+    /// Test Remove removes the key from the HashMap.
+    /// </summary>
+    @Test
+    public void Remove_Removes_Key_From_Hash_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+        hashMap.put(key, item);
+        hashMap.remove(key);
+
+        assertEquals(null, hashMap.get(key));
+    }
+
+    /// <summary>
+    /// Test Remove returns the removed value from the HashMap.
+    /// </summary>
+    @Test
+    public void Remove_Returns_Removed_Value_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+        hashMap.put(key, item);
+        Item returnedItem = hashMap.remove(key);
+
+        assertEquals(item, returnedItem);
+    }
+
+    /// <summary>
+    /// Test Remove returns null when removing a value that doesn't exist in the HashMap.
+    /// </summary>
+    @Test
+    public void Remove_Returns_null_or_default_Value_when_no_match_exists_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+
+        // try to remove a value that doesn't exist:
+        Item returnedItem = hashMap.remove(key);
+
+        assertTrue(returnedItem == null);
+    }
+
+    /// <summary>
+    /// Test that remove throws an exception when called with a null key value.
+    /// </summary>
+    @Test
+    public void Remove_Throws_Exception_With_Null_Key_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+
+        Throwable exception = assertThrows(NullPointerException.class,
+                () -> hashMap.remove(null));
+    }
+
+    /// <summary>
+    /// Test that remove keeps a placeholder in the table
+    /// </summary>
+    @Test
+    public void Remove_keeps_a_key_placeholder_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+        StringKey key = new StringKey("item");
+        Item item = new Item("item", 1, 1.0);
+        hashMap.put(key, item);
+        Item returnedItem = hashMap.remove(key);
+
+        Entry<StringKey, Item>[] table = hashMap.getTable();
+        int bucket = key.hashCode() % table.length;
+
+        // a placeholder will have an Entry with a null for the value, but the key is stil the same as the removed
+        assertEquals(table[bucket].getKey(), key);
+        assertEquals(table[bucket].getValue(), null);
+    }
+
+    /// <summary>
+    /// Removes cause placeholders to remain in the table, test to ensure that
+    /// a resize still occurs even when items are removed
+    /// </summary>
+    @Test
+    public void Remove_placeholders_count_towards_resize_Test()
+    {
+        double loadFactor = 0.5; // default
+        int capacity = 7; // default;
+
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>(capacity, loadFactor);
+        int threshold = (int)(capacity * loadFactor);
+        int i = 0;
+        for (i = 0; i < threshold - 1; i++)
+        {
+            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
+        }
+
+        // just before the threshold, the table should still be the same
+        assertEquals(capacity, hashMap.getTable().length);
+        assertEquals(threshold - 1, hashMap.size());
+
+        hashMap.remove(new StringKey("item1"));
+        assertEquals(threshold - 2, hashMap.size());
+
+        hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
+
+        // the next prime after 7 is 7*2 = 14... and 14+1 is 15.. that's not prime, so 15+2 is 17; which is prime!
+        assertEquals(17, hashMap.getTable().length);
+        assertEquals(threshold - 1, hashMap.size());
+    }
+        //endregion
+
+        //regionKeys()
+    /// <summary>
+    /// Keys returns an Iterator of all the keys in the hashmap.
+    /// </summary>
+    @Test
+    public static void Keys_returns_list_of_keys_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+
+        for (int i = 0; i < 15; i++)
+        {
+            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
+        }
+
+        // get the keys for the map
+        Iterator keys = hashMap.keys();
+        int count = 0;
+        while (keys.hasNext())
+        {
+            StringKey currentKey = (StringKey)keys.next();
+            // look up each item in the hashmap, using the keys, they should all be there!
+            Item currItem = hashMap.get(currentKey);
+            assertNotNull(currItem);
+            count++;
+        }
+
+        assertEquals(hashMap.size(), count);
+    }
+        //endregion
+
+
+        //regionValues()
+    /// <summary>
+    /// Values returns an Iterator of all the Values in the hashmap.
+    /// </summary>
+    @Test
+    public static void Values_returns_list_of_Values_Test()
+    {
+        HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>();
+
+        for (int i = 0; i < 15; i++)
+        {
+            hashMap.put(new StringKey("item" + i), new Item("item" + i, i, 0.0 + i));
+        }
+
+        Entry<StringKey, Item>[] table = hashMap.getTable();
+
+        // get the keys for the map
+        Iterator values = hashMap.values();
+        int count = 0;
+
+        // loop through the values of the hashmap values
+        while (values.hasNext())
+        {
+            Item currValue = (Item)values.next();
+
+            StringKey currKey = new StringKey(currValue.getName());
+
+            Item matchValue = hashMap.get(currKey);
+
+            // The returned value should be the value we looked up with get, based on the same key name
+            assertEquals(matchValue, currValue);
+
+            count++;
+        }
+
+        // The count of the values should be the same as the puts into the table earlier in the test.
+        assertEquals(hashMap.size(), count);
+    }
+        //endregion
 }
