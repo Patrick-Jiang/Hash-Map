@@ -176,13 +176,29 @@ public class HashMap<K, V> implements Map<K, V> {
 	@Override
 	public Iterator keys() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<K> keyList = new ArrayList<K>();
+		for (int i = 0; i < table.length; i++) {
+            if (table[i] != null && table[i].getValue() != null) {
+                keyList.add(table[i].getKey());
+            }
+        }
+		Iterator<K> itr = (Iterator<K>) keyList.iterator();
+
+		return itr;
 	}
 
 	@Override
 	public Iterator values() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList valueList = new ArrayList();
+		 for (int i = 0; i < table.length; i++) {
+             if (table[i] != null && table[i].getValue() != null) {
+                 valueList.add(table[i].getValue());
+             }
+         }
+		 
+		 Iterator<V> itr = (Iterator<V>) valueList.iterator();
+		return itr;
 	}
 
 }
